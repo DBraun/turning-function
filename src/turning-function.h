@@ -116,7 +116,7 @@ Gene
 /*
  * Largest polygon to be handled.
  */
-#define MAX_PTS 100
+#define MAX_PTS 256
 
 /*
  * Types.
