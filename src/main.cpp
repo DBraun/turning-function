@@ -6,11 +6,7 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
-int add(int i, int j) {
-    return i + j;
-}
-
-int vec_to_poly(std::vector<std::vector<float>> points, POLY poly)
+int vec_to_poly(std::vector<std::vector<float>>& points, POLY poly)
 {
     static int line = 0;
 
@@ -36,7 +32,6 @@ int vec_to_poly(std::vector<std::vector<float>> points, POLY poly)
 
 double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2) {
 
-    int update_p, precise_p, n_repeats, i;
     TURN_REP_REC trf, trg;
     TURN_REP f, g;
     POLY_REC pf, pg;
@@ -44,8 +39,14 @@ double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vecto
 
     double ht0, slope, alpha, theta_star, metric2, metric, ht0_err, slope_err;
 
-    precise_p = 0;
-    update_p = 1;
+    // todo: should update_p be 1 or 0
+    int update_p = 0;
+    int precise_p = 1;
+
+    if ((points1.size() < 3 || points1.size() > MAX_PTS) ||
+        points2.size() < 3 || points2.size() > MAX_PTS) {
+        throw std::runtime_error("List of points is a bad size.");
+    }
 
     vec_to_poly(points1, &pf);
     vec_to_poly(points2, &pg);
@@ -90,17 +91,10 @@ PYBIND11_MODULE(turning_function, m) {
         .. autosummary::
            :toctree: _generate
 
-           add
-           subtract
+           distance
     )pbdoc";
 
-    m.def("add", &add, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
-    )pbdoc");
-
-    m.def("metric", &turningFunctionMetric, R"pbdoc(
+    m.def("distance", &turningFunctionMetric, py::arg("points_a"), py::arg("points_b"), R"pbdoc(
         Compute the turning function metric for two lists of points.
 
         Each argument should be a list of points shaped Nx2.

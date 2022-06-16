@@ -2,67 +2,67 @@ import turning_function
 
 import copy
 
+import pytest
+from itertools import product
+
 square = [[0,0], [1,0], [1,1], [0, 1]]
 
 def test_non_zero():
 
-	b = copy.deepcopy(square)
-	b[0][0] = -1
+    b = copy.deepcopy(square)
+    b[0][0] = -1
 
-	m = turning_function.metric(square, b)
+    m = turning_function.distance(square, b)
 
-	# print('m: ', m)
+    # print('m: ', m)
 
-	assert abs(m - 0.6144398026382778) < .00000001
+    assert abs(m - 0.6144398026382778) < .00000001
 
-def test_rotation_invariance1():
+@pytest.mark.parametrize("num_shifts", range(1,4))
+def test_rotation_invariance1(num_shifts):
 
-	b = copy.deepcopy(square)
+    b = copy.deepcopy(square)
 
-	b = [b.pop()] + b
+    for _ in range(num_shifts):
+        b = [b.pop()] + b
 
-	m = turning_function.metric(square, b)
+    m = turning_function.distance(square, b)
 
-	assert m == 0
+    assert m == 0
 
-def test_rotation_invariance2():
+@pytest.mark.parametrize("scale", [0.5, 1., 2., 100000.])
+def test_scale_invariance1(scale):
 
-	b = copy.deepcopy(square)
+    b = copy.deepcopy(square)
 
-	b = [b.pop()] + b
-	b = [b.pop()] + b
+    b = [(x*scale,y*scale) for x, y in b]
 
-	m = turning_function.metric(square, b)
+    # b = [b.pop()] + b
+    # b = [b.pop()] + b
 
-	assert m == 0
+    m = turning_function.distance(square, b)
 
-def test_scale_invariance1():
+    assert m == 0
 
-	b = copy.deepcopy(square)
+@pytest.mark.parametrize("tx,ty", product(range(-1,2),range(-1,2)))
+def test_translation_invariance1(tx, ty):
 
-	scale = 2
+    b = copy.deepcopy(square)
 
-	b = [(x*scale,y*scale) for x, y in b]
+    b = [(x+tx,y+ty) for x, y in b]
 
-	# b = [b.pop()] + b
-	# b = [b.pop()] + b
+    # b = [b.pop()] + b
+    # b = [b.pop()] + b
 
-	m = turning_function.metric(square, b)
+    m = turning_function.distance(square, b)
 
-	assert m == 0
+    assert m == 0
 
-def test_translation_invariance1():
+def test_extra_point():
 
-	b = copy.deepcopy(square)
+    a = [[0,0], [1,0], [1,1], [0, 1]]
+    b = [[0,0], [0.1, 0.], [1,0], [1,1], [0, 1]]
 
-	tx = 2.12351
-	ty = 3.14159
+    m = turning_function.distance(a, b)
 
-	b = [(x+tx,y+ty) for x, y in b]
-
-	# b = [b.pop()] + b
-	# b = [b.pop()] + b
-
-	m = turning_function.metric(square, b)
-
-	assert m == 0
+    assert m == 0
