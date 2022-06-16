@@ -1,6 +1,6 @@
 # Turning Function
 
-This is a Python implementation of ["An efficiently computable metric for comparing polygonal shapes"](http://www.cs.cornell.edu/~dph/papers/ACHKM-TPAMI-91.pdf) (Arkin et al., 1991).
+This module contains Python bindings to a C-implementation of ["An efficiently computable metric for comparing polygonal shapes"](http://www.cs.cornell.edu/~dph/papers/ACHKM-TPAMI-91.pdf) (Arkin et al., 1991).
 
 ## Installation
 

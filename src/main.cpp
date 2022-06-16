@@ -27,7 +27,7 @@ int vec_to_poly(std::vector<std::vector<float>>& points, POLY poly)
         i++;
     }
 
-    return(poly->n = points.size());
+    return(poly->n = (int) points.size());
 }
 
 double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2) {
