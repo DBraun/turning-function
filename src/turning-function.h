@@ -118,10 +118,6 @@ Gene
  */
 #define MAX_PTS 1024
 
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
-
 /*
  * Types.
  */

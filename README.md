@@ -6,6 +6,24 @@ This module contains Python bindings to a C-implementation of ["An efficiently c
 
 `pip install turning_function`
 
+## Usage
+
+```python
+import turning_function
+import random
+
+def random_shape(num_points: int):
+
+	return [(random.random(), random.random()) for _ in range(num_points)]
+
+shape_a = random_shape(turning_function.max_points)
+shape_b = random_shape(42)
+
+distance = turning_function.distance(shape_a, shape_b)
+print('Distance: ', distance)
+
+```
+
 ## License
 
 The original source has this disclaimer:

@@ -1,6 +1,10 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#ifndef M_PI
+#define M_PI 3.141592653589793
+#endif
+
 #include "turning-function.h"
 
 #define STRINGIFY(x) #x
@@ -99,6 +103,8 @@ PYBIND11_MODULE(turning_function, m) {
 
         Each argument should be a list of points shaped Nx2.
     )pbdoc");
+
+    m.attr("max_points") = MAX_PTS;
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
