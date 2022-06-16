@@ -22,9 +22,23 @@ def test_non_zero():
 
     m = turning_function.distance(square, b)
 
-    # print('m: ', m)
+    dist = 0.6144398026382778
 
-    assert abs(m - 0.6144398026382778) < .00000001
+    assert abs(m - dist) < .00000001
+
+    b = copy.deepcopy(square)
+    b[3][0] = -1
+
+    m = turning_function.distance(square, b)
+
+    assert abs(m - dist) < .00000001
+
+    b = copy.deepcopy(square)
+    b[3][1] = 2
+
+    m = turning_function.distance(square, b)
+
+    assert abs(m - dist) < .00000001
 
 @pytest.mark.parametrize("num_shifts", range(1,4))
 def test_rotation_invariance1(num_shifts):
@@ -59,10 +73,21 @@ def test_translation_invariance1(tx, ty):
 
     b = [(x+tx,y+ty) for x, y in b]
 
-    # b = [b.pop()] + b
-    # b = [b.pop()] + b
-
     m = turning_function.distance(square, b)
+
+    assert m == 0
+
+@pytest.mark.parametrize("tx,ty", product(range(-1,2),range(-1,2)))
+def test_translation_rotation_invariance1(tx, ty):
+
+    # use a classic 3-4-5 triangle.
+    triangle1 = [[0,0], [3,0], [0,4]]
+    triangle2 = [[0,0], [0, 3], [-4, 0]]
+
+    # translate
+    triangle2 = [(x+tx,y+ty) for x, y in triangle2]
+
+    m = turning_function.distance(triangle1, triangle2)
 
     assert m == 0
 
