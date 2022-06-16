@@ -10,6 +10,8 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
+namespace py = pybind11;
+
 int vec_to_poly(std::vector<std::vector<float>>& points, POLY poly)
 {
     static int line = 0;
@@ -34,7 +36,7 @@ int vec_to_poly(std::vector<std::vector<float>>& points, POLY poly)
     return(poly->n = (int) points.size());
 }
 
-double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2, bool brute_force_updates) {
+py::list turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2, bool brute_force_updates) {
 
     TURN_REP_REC trf, trg;
     TURN_REP f, g;
@@ -75,11 +77,10 @@ double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vecto
     // printf(precise_p ? "%.18lg %.18lg %d %d %lg %lg" : "%lg %lg %d %d %lg %lg",
     //        metric, turn(theta_star, 0)*180/M_PI,
     //        tr_i(f, e.fi), tr_i(g, e.gi), ht0_err, slope_err);
-
-    return metric;
+    std::vector<double> results{metric, theta_star, ht0_err, slope_err};
+    return py::cast(results);
 }
 
-namespace py = pybind11;
 
 PYBIND11_MODULE(turning_function, m) {
     m.doc() = R"pbdoc(
