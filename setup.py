@@ -5,7 +5,7 @@ from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import setup
 from pathlib import Path
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 ext_modules = [
     Pybind11Extension("turning_function",
@@ -25,7 +25,7 @@ setup(
     url="https://github.com/DBraun/turning-function",
     description="Python implementation of \"An efficiently computable metric for comparing polygonal shapes\" (Arkin et al.)",
     long_description=long_description,
-    long_description_content_type='markdown',
+    long_description_content_type='text/markdown',
     ext_modules=ext_modules,
     extras_require={"test": "pytest"},
     # Currently, build_ext only provides an optional "highest supported C++
