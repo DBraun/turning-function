@@ -108,3 +108,11 @@ def test_random1(num_points):
     distance = turning_function.distance(shape_a, shape_a)
 
     assert distance == 0
+
+@pytest.mark.parametrize("brute_force_updates", [False, True])
+def test_brute_force1(brute_force_updates):
+
+    shape_a = random_shape(1024)
+    shape_b = random_shape(512)
+
+    distance = turning_function.distance(shape_a, shape_b, brute_force_updates=brute_force_updates)

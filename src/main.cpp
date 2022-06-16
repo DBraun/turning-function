@@ -34,7 +34,7 @@ int vec_to_poly(std::vector<std::vector<float>>& points, POLY poly)
     return(poly->n = (int) points.size());
 }
 
-double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2) {
+double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vector<std::vector<float>> points2, bool brute_force_updates) {
 
     TURN_REP_REC trf, trg;
     TURN_REP f, g;
@@ -42,10 +42,6 @@ double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vecto
     EVENT_REC e;
 
     double ht0, slope, alpha, theta_star, metric2, metric, ht0_err, slope_err;
-
-    // todo: should update_p be 1 or 0
-    int update_p = 0;
-    int precise_p = 1;
 
     if ((points1.size() < 3 || points1.size() > MAX_PTS) ||
         points2.size() < 3 || points2.size() > MAX_PTS) {
@@ -66,7 +62,7 @@ double turningFunctionMetric(std::vector<std::vector<float>> points1, std::vecto
 
     metric2 = h_t0min(f, g, 
         ht0, slope, alpha,
-        update_p ? reinit_interval(f, g) : 0,
+        brute_force_updates ? reinit_interval(f, g) : 0,
         &theta_star, &e, &ht0_err, &slope_err);
 
     /*
@@ -98,7 +94,8 @@ PYBIND11_MODULE(turning_function, m) {
            distance
     )pbdoc";
 
-    m.def("distance", &turningFunctionMetric, py::arg("points_a"), py::arg("points_b"), R"pbdoc(
+    m.def("distance", &turningFunctionMetric, py::arg("points_a"), py::arg("points_b"), py::kw_only(),
+        py::arg("brute_force_updates")=0, R"pbdoc(
         Compute the turning function metric for two lists of points.
 
         Each argument should be a list of points shaped Nx2.
