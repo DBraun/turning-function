@@ -8,6 +8,8 @@ This module contains Python bindings to a C-implementation of ["An efficiently c
 
 ## Usage
 
+Call `turning_function.distance(shape_a, shape_b)` where `shape_a`/`shape_b` are Nx2-shaped lists of points (not numpy arrays). Note that there is a maximum number of points a shape can hold: `turning_function.max_points`. 
+
 ```python
 import turning_function
 import random
