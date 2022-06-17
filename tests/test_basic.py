@@ -59,9 +59,6 @@ def test_scale_invariance1(scale):
 
     b = [(x*scale,y*scale) for x, y in b]
 
-    # b = [b.pop()] + b
-    # b = [b.pop()] + b
-
     d, theta, ht_err, slope_err = turning_function.distance(square, b)
 
     assert d == 0
@@ -120,3 +117,6 @@ def test_brute_force1(brute_force_updates):
     if not brute_force_updates:
         assert ht_err == 0
         assert slope_err == 0
+    else:
+        assert ht_err != 0
+        assert slope_err != 0
